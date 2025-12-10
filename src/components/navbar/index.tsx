@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Download, Menu } from 'lucide-react';
+import { Download, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -61,7 +62,7 @@ export default function Navbar() {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="w-full px-8 lg:px-16">
+      <div className="w-full px-4 sm:px-8 lg:px-16">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -70,7 +71,7 @@ export default function Navbar() {
               alt="Logotipo Universidade Católica de Santos" 
               width={200} 
               height={50}
-              className="h-12 w-auto"
+              className="h-10 sm:h-12 w-auto"
             />
           </div>
 
@@ -129,12 +130,79 @@ export default function Navbar() {
           </div>
           
           <div className="md:hidden">
-            <button className="text-gray-900 p-2">
-              <Menu className="h-6 w-6" />
+            <button 
+              className="text-gray-900 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200">
+          <div className="px-4 py-3 space-y-3">
+            <a 
+              href="#" 
+              className="block text-gray-900 hover:text-blue-600 text-lg font-medium transition-colors py-2"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
+              Inicio
+            </a>
+            <a 
+              href="#pesquisa" 
+              className="block text-gray-900 hover:text-blue-600 text-lg font-medium transition-colors py-2"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                document.getElementById('pesquisa')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Pesquisa
+            </a>
+            <a 
+              href="#metodologia" 
+              className="block text-gray-900 hover:text-blue-600 text-lg font-medium transition-colors py-2"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                document.getElementById('metodologia')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Metodologia
+            </a>
+            <a 
+              href="#sobre" 
+              className="block text-gray-900 hover:text-blue-600 text-lg font-medium transition-colors py-2"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                document.getElementById('sobre')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Sobre
+            </a>
+            <a 
+              href="/pesquisa-covid19.pdf" 
+              download="Análise_COVID19_Baixada_Santista.pdf"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 mt-4"
+            >
+              <Download className="w-5 h-5" />
+              Baixar Pesquisa
+            </a>
+          </div>
+        </div>
+      )}
       
       <div 
         className="h-[1.5px] animate-gradient-x" 

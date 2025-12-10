@@ -37,6 +37,10 @@ body {
   font-family: var(--font-afacad);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @keyframes gradient-x {
   0%, 100% {
     background-position: 0% 50%;
